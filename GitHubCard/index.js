@@ -80,8 +80,16 @@ function gitProfileCreator (gitUser){
   const bio = document.createElement("p")
   bio.innerText = `Bio: ${gitUser.bio}`
 
+  const cardBtn = document.createElement("button")
+  cardBtn.classList.add("card-btn")
+  cardBtn.innerText = "See More"
+  cardBtn.addEventListener("click", () => {
+    cardInfo.classList.toggle("visible")
+  })
+
   //creating element hierarchy
 card.appendChild(profPic)
+card.appendChild(cardBtn)
 card.appendChild(cardInfo)
 cardInfo.appendChild(name)
 cardInfo.appendChild(userName)
