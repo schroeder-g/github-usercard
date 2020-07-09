@@ -17,19 +17,20 @@ import axios from 'axios'
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
-const me = axios.get('https://api.github.com/users/schroeder-g')
+function getUsers(userName){
+let newUser = `https://api.github.com/users/${userName}`
+axios.get(newUser)
 .then(function(response){
-  const card = gitProfileCreator(response.data)
-
-  console.log(card)
-
-  
+  debugger
+  const newCard = gitProfileCreator(response.data)
+ 
+  const cardEntry = document.querySelector(".cards")
+  cardEntry.appendChild(newCard)
 })
 .catch(error => {
-  debugger
+  console.log(error)
 })
-// console.log(me)
-
+}
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
@@ -41,8 +42,11 @@ const me = axios.get('https://api.github.com/users/schroeder-g')
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [  'tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell', 'schroeder-g'];
 
+followersArray.forEach(user => {
+  getUsers(user)
+})
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
@@ -53,7 +57,7 @@ function gitProfileCreator (gitUser){
   const card = document.createElement("div")
   card.classList.add("card")
   const profPic = document.createElement("img")
-  card.src = gitUser.avatar_url
+  profPic.src = gitUser.avatar_url
   const cardInfo = document.createElement("div")
   cardInfo.classList.add("card-info")
   const name = document.createElement("h3")
@@ -61,18 +65,20 @@ function gitProfileCreator (gitUser){
   name.innerText = gitUser.name
   const userName = document.createElement("p")
   userName.classList.add("username")
+  userName.innerText = gitUser.login
   const location = document.createElement("p")
-
+  location.innerText = gitUser.location
   const profile = document.createElement("p")
+  profile.innerText = `Profile: `
   const profileAddress = document.createElement("a")
-  profileAddress.href = "gitUser.url"
-  profileAddress.innerText = `Profile: ${gitUser.url}`
+  profileAddress.href = gitUser.html_url
+  profileAddress.innerText = `${gitUser.html_url}`
   const followers = document.createElement("p")
-  followers.innerText = `Followers: `
+  followers.innerText = `Followers: ${gitUser.followers}`
   const following = document.createElement("p")
-  following.innerText = `Following: `
+  following.innerText = `Following:  ${gitUser.following}`
   const bio = document.createElement("p")
-  bio.innerText = `Bio: `
+  bio.innerText = `Bio: ${gitUser.bio}`
 
   //creating element hierarchy
 card.appendChild(profPic)
@@ -87,9 +93,10 @@ cardInfo.appendChild(following)
 cardInfo.appendChild(bio)
 
 console.log(card)
+
+return card
 }
 
-// console.log(gitProfileCreator(me.data))
 /*
     <div class="card">
       <img src={image url of user} />
