@@ -3,7 +3,8 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-
+import axios from 'axios'
+// const me = axios.get('https://api.github.com/users/schroeder-g')
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -16,6 +17,18 @@
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
+const me = axios.get('https://api.github.com/users/schroeder-g')
+.then(function(response){
+  const card = gitProfileCreator(response.data)
+
+  console.log(card)
+
+  
+})
+.catch(error => {
+  debugger
+})
+// console.log(me)
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -33,7 +46,51 @@ const followersArray = [];
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
+*/
+function gitProfileCreator (gitUser){
 
+  //instantiating elements with classes and innertext
+  const card = document.createElement("div")
+  card.classList.add("card")
+  const profPic = document.createElement("img")
+  card.src = gitUser.avatar_url
+  const cardInfo = document.createElement("div")
+  cardInfo.classList.add("card-info")
+  const name = document.createElement("h3")
+  name.classList.add("name")
+  name.innerText = gitUser.name
+  const userName = document.createElement("p")
+  userName.classList.add("username")
+  const location = document.createElement("p")
+
+  const profile = document.createElement("p")
+  const profileAddress = document.createElement("a")
+  profileAddress.href = "gitUser.url"
+  profileAddress.innerText = `Profile: ${gitUser.url}`
+  const followers = document.createElement("p")
+  followers.innerText = `Followers: `
+  const following = document.createElement("p")
+  following.innerText = `Following: `
+  const bio = document.createElement("p")
+  bio.innerText = `Bio: `
+
+  //creating element hierarchy
+card.appendChild(profPic)
+card.appendChild(cardInfo)
+cardInfo.appendChild(name)
+cardInfo.appendChild(userName)
+cardInfo.appendChild(location)
+cardInfo.appendChild(profile)
+profile.appendChild(profileAddress)
+cardInfo.appendChild(followers)
+cardInfo.appendChild(following)
+cardInfo.appendChild(bio)
+
+console.log(card)
+}
+
+// console.log(gitProfileCreator(me.data))
+/*
     <div class="card">
       <img src={image url of user} />
       <div class="card-info">
